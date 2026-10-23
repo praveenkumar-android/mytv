@@ -5,13 +5,18 @@ import androidx.lifecycle.AndroidViewModel
 import com.praveenkumar.mytv.core.model.VideoItem
 import com.praveenkumar.mytv.core.player.PlaybackState
 import com.praveenkumar.mytv.core.player.PlayerManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
 /**
  * ViewModel managing video player instance and playback state across configuration changes (e.g. rotation).
- * Uses ApplicationContext to avoid Activity context leaks.
+ * Injected using Hilt Dependency Injection.
  */
-class PlayerViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class PlayerViewModel @Inject constructor(
+    application: Application
+) : AndroidViewModel(application) {
 
     private var playerManager: PlayerManager? = null
 

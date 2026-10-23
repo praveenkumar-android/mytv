@@ -34,7 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.ui.PlayerView
 import com.praveenkumar.mytv.core.model.VideoItem
@@ -42,6 +42,7 @@ import com.praveenkumar.mytv.core.player.PlaybackState
 
 /**
  * Full-screen video player composable backed by Jetpack Media3 ExoPlayer and [PlayerViewModel].
+ * Uses Hilt dependency injection via [hiltViewModel].
  *
  * Observes [PlaybackState] from [PlayerViewModel] to display:
  * - Buffering progress indicator.
@@ -50,7 +51,7 @@ import com.praveenkumar.mytv.core.player.PlaybackState
  *
  * @param video Video item containing streaming URL and optional DRM license server.
  * @param onBack Callback triggered when the user presses the Back button.
- * @param viewModel [PlayerViewModel] managing ExoPlayer instance across rotation.
+ * @param viewModel [PlayerViewModel] injected via Hilt.
  * @param modifier Composable modifier for layout configuration.
  */
 @OptIn(UnstableApi::class)
@@ -58,7 +59,7 @@ import com.praveenkumar.mytv.core.player.PlaybackState
 fun PlayerScreen(
     video: VideoItem,
     onBack: () -> Unit,
-    viewModel: PlayerViewModel = viewModel(),
+    viewModel: PlayerViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
     BackHandler {

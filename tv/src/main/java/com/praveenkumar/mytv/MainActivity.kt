@@ -17,11 +17,13 @@ import com.praveenkumar.mytv.core.model.VideoItem
 import com.praveenkumar.mytv.feature.catalog.tv.TvHomeScreen
 import com.praveenkumar.mytv.feature.player.PlayerScreen
 import com.praveenkumar.mytv.ui.theme.MyTvTheme
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Main Activity entry point for the Android TV application.
  * Controls top-level navigation between the catalog screen ([TvHomeScreen]) and video playback ([PlayerScreen]).
  */
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalTvMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {

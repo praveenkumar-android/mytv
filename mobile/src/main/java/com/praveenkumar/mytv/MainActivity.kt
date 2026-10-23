@@ -17,11 +17,13 @@ import com.praveenkumar.mytv.core.model.VideoItem
 import com.praveenkumar.mytv.feature.catalog.mobile.MobileHomeScreen
 import com.praveenkumar.mytv.feature.player.PlayerScreen
 import com.praveenkumar.mytv.ui.theme.MyTvTheme
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Main Activity entry point for the Mobile application.
  * Controls top-level navigation between the catalog screen ([MobileHomeScreen]) and video playback ([PlayerScreen]).
  */
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
