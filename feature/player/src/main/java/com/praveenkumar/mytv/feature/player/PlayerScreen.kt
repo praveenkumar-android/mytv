@@ -22,34 +22,35 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.ui.PlayerView
 import com.praveenkumar.mytv.core.model.VideoItem
 import com.praveenkumar.mytv.core.player.PlaybackState
-import com.praveenkumar.mytv.core.player.PlayerManager
 
 /**
- * Full-screen video player composable backed by Jetpack Media3 ExoPlayer.
+ * Full-screen video player composable backed by Jetpack Media3 ExoPlayer and [PlayerViewModel].
  *
- * Observes [PlaybackState] to display:
+ * Observes [PlaybackState] from [PlayerViewModel] to display:
  * - Buffering progress indicator.
  * - Time-To-First-Frame (TTFF) metrics badge.
  * - Playback Error dialog with a Retry mechanism.
  *
  * @param video Video item containing streaming URL and optional DRM license server.
  * @param onBack Callback triggered when the user presses the Back button.
+ * @param viewModel [PlayerViewModel] managing ExoPlayer instance across rotation.
  * @param modifier Composable modifier for layout configuration.
  */
 @OptIn(UnstableApi::class)
@@ -57,30 +58,20 @@ import com.praveenkumar.mytv.core.player.PlayerManager
 fun PlayerScreen(
     video: VideoItem,
     onBack: () -> Unit,
+    viewModel: PlayerViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
     BackHandler {
         onBack()
     }
 
-    val context = LocalContext.current
-
-    // Initialize PlayerManager which owns ExoPlayer instance, state callbacks, and TTFF metrics
-    val playerManager = remember(context, video.id) {
-        PlayerManager(
-            context = context,
-            videoUrl = video.videoUrl,
-            drmLicenseUrl = video.drmLicenseUrl
-        )
+    // Initialize player in ViewModel once using ApplicationContext
+    LaunchedEffect(video.id) {
+        viewModel.initializePlayer(video)
     }
 
-    val playbackState by playerManager.playbackState.collectAsState()
-
-    DisposableEffect(playerManager) {
-        onDispose {
-            playerManager.release()
-        }
-    }
+    val playbackState by (viewModel.playbackState?.collectAsState()
+        ?: remember { mutableStateOf(PlaybackState.Idle) })
 
     Box(
         modifier = modifier
@@ -88,19 +79,21 @@ fun PlayerScreen(
             .background(Color.Black)
     ) {
         // Native Android PlayerView
-        AndroidView(
-            factory = { ctx ->
-                PlayerView(ctx).apply {
-                    player = playerManager.exoPlayer
-                    useController = true
-                    layoutParams = FrameLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT
-                    )
-                }
-            },
-            modifier = Modifier.fillMaxSize()
-        )
+        viewModel.exoPlayer?.let { exoPlayer ->
+            AndroidView(
+                factory = { ctx ->
+                    PlayerView(ctx).apply {
+                        player = exoPlayer
+                        useController = true
+                        layoutParams = FrameLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                    }
+                },
+                modifier = Modifier.fillMaxSize()
+            )
+        }
 
         // Overlay 1: Buffering Spinner
         AnimatedVisibility(
@@ -178,7 +171,7 @@ fun PlayerScreen(
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        Button(onClick = { playerManager.retry() }) {
+                        Button(onClick = { viewModel.retry() }) {
                             Text(text = "Retry Playback")
                         }
                     }
