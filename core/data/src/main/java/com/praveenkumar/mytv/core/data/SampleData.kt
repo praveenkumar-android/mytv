@@ -4,17 +4,17 @@ import com.praveenkumar.mytv.core.model.Category
 import com.praveenkumar.mytv.core.model.VideoItem
 
 /**
- * Sample dataset containing open-source video streams (Big Buck Bunny, Sintel, etc.)
+ * Sample dataset containing open-source video streams (HLS, MP4, Widevine DRM)
  * used for testing catalog rendering and ExoPlayer media playback.
  */
 object SampleData {
     /**
-     * List of sample videos with high quality streaming URLs and thumbnails.
+     * List of sample videos with high quality streaming URLs, thumbnails, and DRM configurations.
      */
     val sampleVideos = listOf(
         VideoItem(
             id = "1",
-            title = "Big Buck Bunny",
+            title = "Big Buck Bunny (MP4)",
             description = "A large and lovable rabbit deals with bullying forest creatures in this iconic open-source animated short.",
             videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
             thumbnailUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg",
@@ -24,6 +24,17 @@ object SampleData {
         ),
         VideoItem(
             id = "2",
+            title = "Tears of Steel (Widevine DRM / DASH)",
+            description = "Protected Widevine CENC encrypted stream for testing DRM license acquisition and playback.",
+            videoUrl = "https://storage.googleapis.com/wvmedia/cenc/h264/tears/tears.mpd",
+            thumbnailUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/TearsOfSteel.jpg",
+            bannerUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/TearsOfSteel.jpg",
+            category = "DRM Protected",
+            duration = "12:14",
+            drmLicenseUrl = "https://proxy.uat.widevine.com/proxy?provider=widevine_test"
+        ),
+        VideoItem(
+            id = "3",
             title = "Elephant's Dream",
             description = "The story of two strange workers in a vast and bizarre machine world.",
             videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
@@ -33,7 +44,7 @@ object SampleData {
             duration = "10:53"
         ),
         VideoItem(
-            id = "3",
+            id = "4",
             title = "For Bigger Blazes",
             description = "Experience the power of Google Chromecast streaming high quality video.",
             videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
@@ -43,27 +54,7 @@ object SampleData {
             duration = "0:15"
         ),
         VideoItem(
-            id = "4",
-            title = "For Bigger Escapes",
-            description = "Discover amazing landscapes and escapes streaming in crisp HD.",
-            videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-            thumbnailUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerEscapes.jpg",
-            bannerUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerEscapes.jpg",
-            category = "Promos",
-            duration = "0:15"
-        ),
-        VideoItem(
             id = "5",
-            title = "Tears of Steel",
-            description = "Set in a dystopian future Amsterdam, a group of warriors fights off robotic invaders.",
-            videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
-            thumbnailUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/TearsOfSteel.jpg",
-            bannerUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/TearsOfSteel.jpg",
-            category = "Sci-Fi",
-            duration = "12:14"
-        ),
-        VideoItem(
-            id = "6",
             title = "Sintel",
             description = "A lonely young woman searches for her lost baby dragon in a mythical fantasy world.",
             videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
@@ -79,8 +70,8 @@ object SampleData {
      */
     val sampleCategories = listOf(
         Category("c1", "Featured", sampleVideos),
-        Category("c2", "Animation", sampleVideos.filter { it.category == "Animation" }),
-        Category("c3", "Sci-Fi", sampleVideos.filter { it.category == "Sci-Fi" }),
-        Category("c4", "Promos", sampleVideos.filter { it.category == "Promos" })
+        Category("c2", "DRM & Protection", sampleVideos.filter { it.drmLicenseUrl != null }),
+        Category("c3", "Animation", sampleVideos.filter { it.category == "Animation" }),
+        Category("c4", "Sci-Fi", sampleVideos.filter { it.category == "Sci-Fi" })
     )
 }

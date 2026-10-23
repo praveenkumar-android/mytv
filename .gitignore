@@ -11,8 +11,7 @@
 *.class
 
 # Generated files
-/build/
-/*/build/
+build/
 bin/
 gen/
 out/
