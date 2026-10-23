@@ -12,10 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.Surface
-import com.praveenkumar.mytv.data.SampleData
-import com.praveenkumar.mytv.data.VideoItem
-import com.praveenkumar.mytv.ui.home.TvHomeScreen
-import com.praveenkumar.mytv.ui.player.PlayerScreen
+import com.praveenkumar.mytv.core.data.SampleData
+import com.praveenkumar.mytv.core.model.VideoItem
+import com.praveenkumar.mytv.feature.catalog.tv.TvHomeScreen
+import com.praveenkumar.mytv.feature.player.PlayerScreen
 import com.praveenkumar.mytv.ui.theme.MyTvTheme
 
 /**

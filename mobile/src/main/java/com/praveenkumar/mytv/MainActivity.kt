@@ -12,10 +12,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.praveenkumar.mytv.data.SampleData
-import com.praveenkumar.mytv.data.VideoItem
-import com.praveenkumar.mytv.ui.home.MobileHomeScreen
-import com.praveenkumar.mytv.ui.player.PlayerScreen
+import com.praveenkumar.mytv.core.data.SampleData
+import com.praveenkumar.mytv.core.model.VideoItem
+import com.praveenkumar.mytv.feature.catalog.mobile.MobileHomeScreen
+import com.praveenkumar.mytv.feature.player.PlayerScreen
 import com.praveenkumar.mytv.ui.theme.MyTvTheme
 
 /**

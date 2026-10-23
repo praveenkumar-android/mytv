@@ -25,3 +25,12 @@ dependencyResolutionManagement {
 rootProject.name = "MyTv"
 include(":mobile")
 include(":tv")
+
+include(":core:model")
+include(":core:data")
+include(":core:player")
+include(":core:ui")
+
+include(":feature:catalog:mobile")
+include(":feature:catalog:tv")
+include(":feature:player")
