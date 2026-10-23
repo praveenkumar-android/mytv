@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -34,13 +34,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     shape = RectangleShape
                 ) {
-                    // Holds the currently selected video for playback state
-                    var selectedVideo by remember { mutableStateOf<VideoItem?>(null) }
+                    // Holds the currently selected video for playback state, preserved across rotation and configuration changes
+                    var selectedVideo by rememberSaveable { mutableStateOf<VideoItem?>(null) }
 
                     // Display PlayerScreen if a video is selected, otherwise render the TV catalog
                     selectedVideo?.let { video ->
                         PlayerScreen(
-                            videoUrl = video.videoUrl,
+                            video = video,
                             onBack = { selectedVideo = null }
                         )
                     } ?: TvHomeScreen(

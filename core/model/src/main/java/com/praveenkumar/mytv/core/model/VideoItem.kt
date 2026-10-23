@@ -1,5 +1,8 @@
 package com.praveenkumar.mytv.core.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 /**
  * Represents an individual video item in the media catalog.
  *
@@ -13,6 +16,7 @@ package com.praveenkumar.mytv.core.model
  * @property duration Formatted duration string (e.g., "9:56").
  * @property drmLicenseUrl Optional Widevine DRM license server URL.
  */
+@Parcelize
 data class VideoItem(
     val id: String,
     val title: String,
@@ -23,7 +27,7 @@ data class VideoItem(
     val category: String,
     val duration: String,
     val drmLicenseUrl: String? = null
-)
+) : Parcelable
 
 /**
  * Represents a category grouping multiple [VideoItem]s for display in horizontal rows.
